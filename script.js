@@ -10,24 +10,22 @@ const loadlevelWord = (id) => {
     .then((res) => res.json())
     .then((data) => diplaylevelWord(data.data));
 };
-// id
-// :
-// 89
-// level
-// :
-// 1
-// meaning
-// :
-// "গাছ"
-// pronunciation
-// :
-// "ট্রি"
-// word
-// :
-// "Tree"
 const diplaylevelWord = (words) => {
   const wordContainer = document.getElementById("word-container");
   wordContainer.innerHTML = "";
+  if (words.length == 0) {
+    wordContainer.innerHTML = `
+    <div class="text-center col-span-full">
+    <i class="fa-solid fa-triangle-exclamation text-6xl mb-4"></i>
+        <p class="text-xl text-gray-400 font-bangla mb-3">
+          এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।
+        </p>
+
+        <h2 class="text-4xl font-bold font-bangla">নেক্সট Lesson এ যান</h2>
+      </div>
+    `;
+    return;
+  }
   words.forEach((word) => {
     const card = document.createElement("div");
     card.innerHTML = `
