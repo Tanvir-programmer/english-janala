@@ -8,7 +8,14 @@ const loadlevelWord = (id) => {
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   fetch(url)
     .then((res) => res.json())
-    .then((data) => diplaylevelWord(data.data));
+    .then((data) => {
+      const clickBtn = document.getElementById(`lessonBtn-${id}`);
+      document.querySelectorAll(".btn").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+      clickBtn.classList.add("active");
+      diplaylevelWord(data.data);
+    });
 };
 const diplaylevelWord = (words) => {
   const wordContainer = document.getElementById("word-container");
@@ -30,10 +37,14 @@ const diplaylevelWord = (words) => {
     const card = document.createElement("div");
     card.innerHTML = `
     <div class="bg-white rounded-xl shadow-sm text-center p-10 space-y-4">
-        <h2 class="font-bold text-xl">${word.word}</h2>
+        <h2 class="font-bold text-xl">${
+          word.word ? word.word : "Word did not found"
+        }</h2>
         <p class="font-semibold">Meaning/Pronunciation</p>
 
-        <div class="font-bangla font-semibold">${word.meaning}</div>
+        <div class="font-bangla font-semibold">${
+          word.meaning ? word.meaning : "Did not found"
+        }</div>
         <div class="flex justify-between items-center">
           <button class="bg-[#1A91FF10] p-2 rounded-sm hover:bg-[#1A91FF80]">
             <i class="fa-solid fa-circle-info"></i>
@@ -55,7 +66,7 @@ const displayLessons = (lessons) => {
   for (let lesson of lessons) {
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML = `
-    <button onclick="loadlevelWord(${lesson.level_no})" class="btn btn-outline btn-primary">
+    <button id="lessonBtn-${lesson.level_no}" onclick="loadlevelWord(${lesson.level_no})" class="btn btn-outline btn-primary">
       <i class="fa-solid fa-book-open"></i>Lesson -${lesson.level_no}
     </button>
    `;
