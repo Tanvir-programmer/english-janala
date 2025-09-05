@@ -17,6 +17,41 @@ const loadlevelWord = (id) => {
       diplaylevelWord(data.data);
     });
 };
+const loadWordDetail = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/word/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayWordDetail(data.data);
+};
+const displayWordDetail = (word) => {
+  const detailBox = document.getElementById("detail-container");
+  detailBox.innerHTML = `
+   <div class="bg-white rounded-xl shadow-sm text-center p-10 space-y-4">
+        <h2 class="font-bold text-xl">${
+          word.word ? word.word : "Word did not found"
+        }</h2>
+        <p class="font-semibold">Meaning/Pronunciation</p>
+
+        <div class="font-bangla font-semibold">${
+          word.meaning ? word.meaning : "Did not found"
+        }</div>
+        <div class="flex justify-between items-center">
+          <button onclick="loadWordDetail(${
+            word.id
+          })" class="bg-[#1A91FF10] p-2 rounded-sm hover:bg-[#1A91FF80]">
+            <i class="fa-solid fa-circle-info"></i>
+          </button>
+            <h2> synonyms: ${
+              word.synonyms ? word.synonyms : "Did not found"
+            }</h2>
+          <button class="bg-[#1A91FF10] p-2 rounded-sm hover:bg-[#1A91FF80]">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+        </div>
+      </div>
+  `;
+  document.getElementById("my_modal_5").showModal();
+};
 const diplaylevelWord = (words) => {
   const wordContainer = document.getElementById("word-container");
   wordContainer.innerHTML = "";
@@ -46,7 +81,9 @@ const diplaylevelWord = (words) => {
           word.meaning ? word.meaning : "Did not found"
         }</div>
         <div class="flex justify-between items-center">
-          <button class="bg-[#1A91FF10] p-2 rounded-sm hover:bg-[#1A91FF80]">
+          <button onclick="loadWordDetail(${
+            word.id
+          })" class="bg-[#1A91FF10] p-2 rounded-sm hover:bg-[#1A91FF80]">
             <i class="fa-solid fa-circle-info"></i>
           </button>
 
